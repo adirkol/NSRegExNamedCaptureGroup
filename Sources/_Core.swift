@@ -6,7 +6,7 @@ import Foundation
 /// - Parameters:
 ///   - nsRange: The Foundation range to convert.
 ///
-/// - Returns: A Swift range equivalent to `nsRange` 
+/// - Returns: A Swift range equivalent to `nsRange`
 ///   if it is able to be converted. Otherwise, `nil`.
 fileprivate extension String {
   func range( from nsRange: NSRange ) -> Range<Index>? {
@@ -14,8 +14,8 @@ fileprivate extension String {
       return nil
       }
 
-    let utf16start = UTF16Index( swiftRange.lowerBound )
-    let utf16end = UTF16Index( swiftRange.upperBound )
+      let utf16start = Index(utf16Offset: swiftRange.lowerBound, in: self)
+       let utf16end = Index(utf16Offset: swiftRange.upperBound, in: self)
 
     guard let start = Index( utf16start, within: self )
       , let end = Index( utf16end, within: self ) else {
@@ -26,7 +26,7 @@ fileprivate extension String {
     }
   }
 
-// Matches all types of capture groups, including 
+// Matches all types of capture groups, including
 // named capture (?<Name> ... ), atomic grouping (?> ... ),
 // conditional (? if then|else) and so on, except for
 // grouping-only parentheses (?: ... ).
@@ -63,7 +63,7 @@ extension NSRegularExpression /* _NamedCaptureGroupsSupport */ {
         }
 
       // Extract the sub-expression nested in `self.pattern`
-      let genericCaptureGroupExpr: String = self.pattern[ self.pattern.range( from: ordiGroup.range )! ]
+          let genericCaptureGroupExpr: String = String(self.pattern[ self.pattern.range( from: ordiGroup.range )! ])
 
       // Extract the part of Named Capture Group sub-expressions
       // nested in `genericCaptureGroupExpr`.
@@ -75,7 +75,7 @@ extension NSRegularExpression /* _NamedCaptureGroupsSupport */ {
 
       if namedCaptureGroupsMatched.count > 0 {
         let firstNamedCaptureGroup = namedCaptureGroupsMatched[ 0 ]
-        let groupName: String = genericCaptureGroupExpr[ genericCaptureGroupExpr.range( from: firstNamedCaptureGroup.rangeAt( 1 ) )! ]
+          let groupName: String = String(genericCaptureGroupExpr[ genericCaptureGroupExpr.range( from: firstNamedCaptureGroup.range( at: 1 ) )! ])
 
         groupNames[ groupName ] = index + 1
 

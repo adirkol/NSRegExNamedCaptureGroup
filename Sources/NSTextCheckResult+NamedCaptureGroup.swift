@@ -27,9 +27,9 @@ extension NSTextCheckingResult {
   @objc(rangeWithGroupName:)
   public func rangeWith(_ groupName: String?) -> NSRange {
     
-    guard let name = groupName else { return self.rangeAt(0) }
+      guard let name = groupName else { return self.range(at: 0) }
     
-    return regularExpression?._namedCaptures[name].map { rangeAt($0) } ?? NSRange(location: NSNotFound, length: 0)
+      return regularExpression?._namedCaptures[name].map { range(at: $0) } ?? NSRange(location: NSNotFound, length: 0)
   }
   
 }
@@ -46,7 +46,7 @@ extension NSRegularExpression {
     
     if reval == nil {
       
-      reval = _resultsOfNamedCaptures() 
+      reval = _resultsOfNamedCaptures()
       objc_setAssociatedObject(self, AssociatedKeys.namedCaptures, reval, .OBJC_ASSOCIATION_RETAIN)
     }
     return reval!
